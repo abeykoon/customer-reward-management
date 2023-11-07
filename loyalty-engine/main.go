@@ -104,7 +104,7 @@ func main() {
 	r.HandleFunc("/rewards/{id}", getRewardOffer).Methods("GET")
 	r.HandleFunc("/user-rewards", getUserRewards).Methods("GET")
 	r.HandleFunc("/user/{id}", getUserDetails).Methods("GET")
-	http.ListenAndServe(":9090", r)
+	http.ListenAndServe(":7070", r)
 }
 
 func init() {
