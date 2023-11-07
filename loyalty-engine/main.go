@@ -2,9 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
-	"net/http"
 )
 
 type User struct {
@@ -15,12 +16,12 @@ type User struct {
 }
 
 type RewardOffer struct {
-	Id string `json:"id"`
-	Name    string `json:"name"`
-	Value   float32 `json:"value"`
-	TotalPoints  int `json:"totalPoints"`
-	Description string `json:"description"`
-	LogoUrl string `json:"logoUrl"`
+	Id          string  `json:"id"`
+	Name        string  `json:"name"`
+	Value       float32 `json:"value"`
+	TotalPoints int     `json:"totalPoints"`
+	Description string  `json:"description"`
+	LogoUrl     string  `json:"logoUrl"`
 }
 
 type UserReward struct {
@@ -56,7 +57,6 @@ func getRewardOffer(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&User{})
 
 }
-
 
 func getUserRewards(w http.ResponseWriter, r *http.Request) {
 	logger.Info("get all rewards")
@@ -104,7 +104,7 @@ func main() {
 	r.HandleFunc("/rewards/{id}", getRewardOffer).Methods("GET")
 	r.HandleFunc("/user-rewards", getUserRewards).Methods("GET")
 	r.HandleFunc("/user/{id}", getUserDetails).Methods("GET")
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":9090", r)
 }
 
 func init() {
