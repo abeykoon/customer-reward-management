@@ -1,0 +1,22 @@
+openapi: 3.0.0
+info:
+  title: Covid Information Service
+  version: 1.0.0
+paths:
+  /info:
+    get:
+      summary: Get Covid Information for a country
+      description: Get Covid Information for a country
+      parameters:
+        - in: query
+          name: country
+          description: Name of the country
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response
+
+        '400':
+          description: Bad Request
