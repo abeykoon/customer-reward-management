@@ -1,0 +1,49 @@
+apiVersion: core.choreo.dev/v1alpha1
+kind: ComponentConfig
+metadata:
+  # +required Name of the component that this configuration belongs to.
+  name: Covid Information service
+  # +required Project name of the component that this component belongs to. Cannot be changed after creation.
+  projectName: TestProxyProject
+  annotations:
+    componentType: Service
+spec:
+  # +optional Build instructions for the component.
+  build:
+    # +required Name of the branch. This is used to identify the corresponding deployment track.
+    branch: main
+  # +optional Incoming connection details for the component (AKA Endpoints).
+  inbound:
+    # +required Unique name for the endpoint. (This name will be used when generating the managed API)
+  - name: CovidInformationService
+    # +required Numeric port value that gets exposed via this endpoint
+    port: 8080
+    # +required Type of the traffic this endpoint is accepting. Example: REST, GraphQL, etc.
+    # Allowed values: REST, GraphQL, GRPC
+    type: REST
+    # +optional Network level visibility of this endpoint. Defaults to Project
+    # Accepted values: Project|Organization|Public.
+    networkVisibility: Public
+    # +optional Context (base path) of the API that is exposed via this endpoint.
+    # This is mandatory if the endpoint type is set to REST or GraphQL.
+    context: /info
+    # +optional Path to the schema definition file. Defaults to wild card route if not provided
+    # This is only applicable to REST endpoint types.
+    # The path should be relative to the docker context.
+    schemaFilePath: openapi.yaml
+
+  outbound:
+    # +optional Defines the service references from the internal API marketplace.
+    serviceReferences:
+      # +required Name of the service reference
+    - name: choreo:///hasithahiranya/4brx/lcumlp/proxy/3.0.0/PUBLIC
+      connectionConfig: 01ee980b-bdb6-1cce-ae26-a56549dfad8c
+      env:
+      - from: ServiceURL
+        to: SERVICE_URL
+      - from: ConsumerKey
+        to: CLIENT_ID
+      - from: ConsumerSecret
+        to: CLIENT_SECRET
+      - from: TokenURL
+        to: TOKEN_URL
