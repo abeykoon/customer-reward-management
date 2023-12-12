@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/base64"
+	"encoding/json"
 	"fmt"
 	"io"
 	"log"
@@ -10,6 +11,10 @@ import (
 	"os"
 	"strings"
 )
+
+type AccessTokenResponse struct {
+	AccessToken string `json:"access_token"`
+}
 
 func fetchDataHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -34,14 +39,22 @@ func fetchDataHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error getting token", http.StatusInternalServerError)
 		return
 	}
+	var tokenResponse AccessTokenResponse
+	err := json.Unmarshal([]byte(*token), &tokenResponse)
+	if err != nil {
+		log.Println("Error decoding JSON:", err)
+		return
+	}
+	accessToken := tokenResponse.AccessToken
+	log.Println("Access Token:", accessToken)
 
 	// Make a GET request to the REST service
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		fmt.Println("Error creating request:", err)
+		log.Println("Error creating request:", err)
 		return
 	}
-	req.Header.Set("Authorization", "Bearer " + *token)
+	req.Header.Set("Authorization", "Bearer "+accessToken)
 	client := &http.Client{}
 	response, err := client.Do(req)
 	if err != nil {
@@ -76,7 +89,7 @@ func getToken(clientID string, clientSecret string, tokenEndpoint string) *strin
 		return nil
 	}
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Authorization", "Basic "+ authHeader)
+	req.Header.Set("Authorization", "Basic "+authHeader)
 
 	resp, err := client.Do(req)
 	if err != nil {
