@@ -36,8 +36,8 @@ spec:
     # +optional Defines the service references from the internal API marketplace.
     serviceReferences:
       # +required Name of the service reference
-    - name: choreo:///hasithahiranya/4brx/lcumlp/proxy/3.0.0/PUBLIC
-      connectionConfig: 01ee980b-bdb6-1cce-ae26-a56549dfad8c
+    - name: choreo:///hasithahiranya/kufn/rgzjcx/proxy/v1.0/PUBLIC
+      connectionConfig: 01ee998b-c0d8-1c6e-96a5-9f27802c2473
       env:
       - from: ServiceURL
         to: SERVICE_URL
